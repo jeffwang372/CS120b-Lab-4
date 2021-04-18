@@ -36,6 +36,10 @@ tests = [ {'description': 'PINA: 0x00, 0x01, 0x00, 0x01, 0x00 => PORTB: 0x01',
 	{'inputs': [('PINA', 0x00)], 'iterations': 2}],	
     'expected': [('PORTB',0x01)],
     },
+    {'description': 'PINA: 0x00 => PORTB: 0x01',
+    'steps': [{'inputs': [('PINA', 0x00)], 'iterations': 2}],
+    'expected': [('PORTB',0x01)],
+    },
     ]
 watch = ['pt1State']
 

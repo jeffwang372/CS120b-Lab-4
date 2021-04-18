@@ -54,6 +54,7 @@ void pt1SM() {
 			outputB = 0x01;
 			break;
 		case Wait1:
+			outputB = 0x01;
 			break;
 		case S1:
 			outputB = 0x02;
