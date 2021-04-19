@@ -19,15 +19,17 @@ void SMFunc() {
         unsigned char outputC = 0x00;
 	unsigned char outputB = 0x00;	
 
-	outB = PORTB;
+	outputB = PORTB;
         outputC = PORTC;
         inputA = PINA;
         switch(SMState) {
                 case SMStart:
                         SMState = Init;
+			outputC = 0x00;
                         break;
                 case Init:
                         SMState = Wait;
+			outputC = 0x01;
                         break;
                 case Wait:
                         if((inputA & 0x80) == 0x80) {
@@ -36,6 +38,7 @@ void SMFunc() {
                         if((inputA & 0x04) == 0x04) {
                                 SMState = Unlock1;
                         }
+			outputC = 0x02;
                         break;
                 case Unlock1:
 			if((inputA & 0xFF) == 0x00) {
@@ -47,6 +50,7 @@ void SMFunc() {
 			else if((inputA & 0x04) != 0x04) {
                                 SMState = Wait;
                         }
+			outputC = 0x03;
                         break;
                 case WaitUnlock:
                         if((inputA & 0x80) == 0x80) {
@@ -58,6 +62,7 @@ void SMFunc() {
 			else if((inputA & 0xFF) != 0x00) {
                                 SMState = Wait;
                         }
+			outputC = 0x04;
                         break;
                 case Unlock2:
                         if((inputA & 0x80) == 0x80) {
@@ -66,11 +71,13 @@ void SMFunc() {
 			else {
 				SMState = Wait;
 			}
+			outputC = 0x05;
                         break;
 		case Lock:
 			if((inputA & 0x80) != 0x80) {
                                 SMState = Wait;
                         }
+			outputC = 0x06;
 			break;
                 default:
                         SMState = SMStart;
@@ -81,33 +88,25 @@ void SMFunc() {
                 case SMStart:
                         break;
                 case Init:
-                        outputC = 0x07;
+                        outputB = 0x00;
                         break;
                 case Wait:
                         break;
-                case Inc:
-			if(outputC < 0x09) {
-                                outputC = outputC + 1;
-                        }
+                case Unlock1:
                         break;
-                case Reset:
-                        outputC = 0x00;
+                case WaitUnlock:
                         break;
-                case Dec:
-                        if(outputC > 0x00) {
-                                outputC = outputC - 1;
-                        }
+                case Unlock2:
+                        outputB = 0x01;
                         break;
-		case WaitInc:
-			break;
-		case WaitReset:
-			break;
-		case WaitDec:
+		case Lock:
+			outputB = 0x00;
 			break;
                 default:
                         break;
         }
         PORTC = outputC;
+	PORTB = outputB;
 }
 
 int main(void) {
