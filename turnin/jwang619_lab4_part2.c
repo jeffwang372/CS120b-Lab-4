@@ -12,7 +12,7 @@
 #include "simAVRHeader.h"
 #endif
 
-enum SMStates {SMStart, Init, Wait, Inc, Reset, Dec, Wait2} SMState;
+enum SMStates {SMStart, Init, Wait, Inc, Reset, Dec, WaitInc, WaitReset, WaitDec} SMState;
 
 void SMFunc() {
         unsigned char inputA = 0x00;
@@ -39,24 +39,47 @@ void SMFunc() {
                         }
                         break;
                 case Inc:
-                        SMState = Wait2;
+                        SMState = WaitInc;
                         break;
                 case Reset:
-                        if((inputA & 0x03) == 0x00) {
-                                SMState = Wait;
-                        }
+                        SMState = WaitReset;
                         break;
                 case Dec:
-                        SMState = Wait2;
+                        SMState = WaitDec;
                         break;
-		case Wait2:
+		case WaitInc:
 			if((inputA & 0x03) == 0x03) {
                                 SMState = Reset;
                         }
+			if((inputA & 0x03) == 0x02) {
+                                SMState = Dec;
+                        }	
                         if((inputA & 0x03) == 0x00) {
                                 SMState = Wait;
                         }
 			break;
+		case WaitReset:
+                        if((inputA & 0x03) == 0x01) {
+                                SMState = Inc;
+                        }
+                        if((inputA & 0x03) == 0x02) {
+                                SMState = Dec;
+                        }
+                        if((inputA & 0x03) == 0x00) {
+                                SMState = Wait;
+                        }
+                        break;
+		case WaitDec:
+                        if((inputA & 0x03) == 0x03) {
+                                SMState = Reset;
+                        }
+                        if((inputA & 0x03) == 0x01) {
+                                SMState = Inc;
+                        }
+                        if((inputA & 0x03) == 0x00) {
+                                SMState = Wait;
+                        }
+                        break;
                 default:
                         SMState = SMStart;
                         break;
@@ -83,7 +106,11 @@ void SMFunc() {
                                 outputC = outputC - 1;
                         }
                         break;
-		case Wait2:
+		case WaitInc:
+			break;
+		case WaitReset:
+			break;
+		case WaitDec:
 			break;
                 default:
                         break;

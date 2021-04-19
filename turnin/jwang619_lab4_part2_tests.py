@@ -28,17 +28,21 @@
 #    ]
 
 
-tests = [ {'description': 'PINA: 0x00, 0x01, 0x00, 0x03, 0x00 => PORTC: 0x00',
+tests = [ {'description': 'PINA: 0x00, 0x03, 0x00, 0x01, 0x00, 0x01, 0x00, 0x02, 0x00 => PORTC: 0x01',
     'steps': [{'inputs': [('PINA', 0x00)], 'iterations': 2},
+        {'inputs': [('PINA', 0x03)], 'iterations': 2},
+        {'inputs': [('PINA', 0x00)], 'iterations': 2},
         {'inputs': [('PINA', 0x01)], 'iterations': 2},
         {'inputs': [('PINA', 0x00)], 'iterations': 2},
-        {'inputs': [('PINA', 0x03)], 'iterations': 2},
-        {'inputs': [('PINA', 0x00)], 'iterations': 2}],
-    'expected': [('PORTC',0x00)],
+	{'inputs': [('PINA', 0x01)], 'iterations': 2},
+	{'inputs': [('PINA', 0x00)], 'iterations': 2},
+	{'inputs': [('PINA', 0x02)], 'iterations': 2},
+	{'inputs': [('PINA', 0x00)], 'iterations': 2}],
+    'expected': [('PORTC',0x01)],
     },
-    {'description': 'PINA: 0x00 => PORTC: 0x00',
+    {'description': 'PINA: 0x00 => PORTC: 0x01',
     'steps': [{'inputs': [('PINA', 0x00)], 'iterations': 2}],
-    'expected': [('PORTC',0x00)],
+    'expected': [('PORTC',0x01)],
     },
     ]
 watch = ['SMState']
