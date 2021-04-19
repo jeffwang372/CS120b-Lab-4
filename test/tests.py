@@ -28,20 +28,20 @@
 #    ]
 
 
-tests = [ {'description': 'PINA: 0x00, 0x01, 0x00, 0x01, 0x00 => PORTB: 0x01',
+tests = [ {'description': 'PINA: 0x00, 0x01, 0x00, 0x03, 0x00 => PORTC: 0x00',
     'steps': [{'inputs': [('PINA', 0x00)], 'iterations': 2},
-        {'inputs': [('PINA', 0x01)], 'iterations': 100},
-        {'inputs': [('PINA', 0x00)], 'iterations': 2},
         {'inputs': [('PINA', 0x01)], 'iterations': 2},
-	{'inputs': [('PINA', 0x00)], 'iterations': 2}],	
-    'expected': [('PORTB',0x01)],
+        {'inputs': [('PINA', 0x00)], 'iterations': 2},
+        {'inputs': [('PINA', 0x03)], 'iterations': 2},
+        {'inputs': [('PINA', 0x00)], 'iterations': 2}],
+    'expected': [('PORTC',0x00)],
     },
-    {'description': 'PINA: 0x00 => PORTB: 0x01',
+    {'description': 'PINA: 0x00 => PORTC: 0x00',
     'steps': [{'inputs': [('PINA', 0x00)], 'iterations': 2}],
-    'expected': [('PORTB',0x01)],
+    'expected': [('PORTC',0x00)],
     },
     ]
-watch = ['pt1State']
+watch = ['SMState']
 
 
 
